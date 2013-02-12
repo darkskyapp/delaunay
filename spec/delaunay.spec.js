@@ -99,7 +99,52 @@ describe("Delaunay", function() {
     });
   });
 
-  describe("triangulate", function() {
+  describe("triangulateMatrix", function() {
+    /* TODO */
+  });
+
+  describe("resolve", function() {
+    var a = [1, 2, 3];
+
+    it("should return an object verbatim given no key", function() {
+      expect(Delaunay.resolve(a)).toBe(a);
+    });
+
+    it("should return an object's property given a string", function() {
+      expect(Delaunay.resolve({"foo": a}, "foo")).toBe(a);
+    });
+
+    it("should return a nested object's value given an array of strings", function() {
+      expect(Delaunay.resolve({"foo": {"bar": a}}, ["foo", "bar"])).toBe(a);
+    });
+  });
+
+  describe("dimensions", function() {
+    it("should return 0 given an empty array", function() {
+      expect(Delaunay.dimensions([])).toBe(0);
+    });
+
+    it("should return the minimum dimensionality of the given position vectors", function() {
+      expect(Delaunay.dimensions([[1, 2, 3], [1, 2], [1, 2, 3, 4]])).toBe(2);
+    });
+
+    it("should utilize Delaunay.resolve() on each given object given a property argument", function() {
+      expect(Delaunay.dimensions(
+        [
+          {"foo": [1, 2, 3]},
+          {"foo": [4, 5, 6]},
+          {"foo": [7, 8, 9]},
+          {"foo": [0, 1, 2]},
+          {"foo": [3, 4, 5]},
+          {"foo": [6, 7, 8]},
+          {"foo": [9, 0, 1]}
+        ],
+        "foo"
+      )).toBe(3);
+    });
+  });
+
+  describe("triangulateObjects", function() {
     /* TODO */
   });
 });
