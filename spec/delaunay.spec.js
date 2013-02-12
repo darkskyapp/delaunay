@@ -82,7 +82,21 @@ describe("Delaunay", function() {
       ]);
     });
 
-    /* FIXME: Test with a bounding margin! */
+    it("should apply a margin around the bounding simplex if requested", function() {
+      expect(Delaunay.boundingSimplex(
+        3,
+        [
+          1, 2, 3,
+          4, 5, 6
+        ],
+        20
+      )).toEqual([
+        -19, -18, -17,
+         67, -18, -17,
+        -19,  68, -17,
+        -19, -18,  69
+      ]);
+    });
   });
 
   describe("triangulate", function() {
