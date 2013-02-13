@@ -112,19 +112,20 @@ describe("Delaunay", function() {
       ]);
     });
 
-    it("should apply a multiplicative margin around the bounding simplex if requested", function() {
+    it("should apply additive and multiplicative margins around the bounding simplex if requested", function() {
       expect(Delaunay.boundingSimplex(
         [
           [1, 2, 3],
           [4, 5, 6]
         ],
         3,
+        1,
         2
       )).toEqual([
-        [-5, -4, -3],
-        [13, -4, -3],
-        [-5, 14, -3],
-        [-5, -4, 15]
+        [-12, -11, -10],
+        [ 21, -11, -10],
+        [-12,  22, -10],
+        [-12, -11,  23]
       ]);
     });
   });
@@ -234,6 +235,31 @@ describe("Delaunay", function() {
   });
 
   describe("triangulate", function() {
-    /* TODO */
+    it("should correctly triangulate points in 2D", function() {
+      expect(Delaunay.triangulate(
+        [
+          [223,   1],
+          [ 92,  46],
+          [200,  97],
+          [325, 120],
+          [  2, 148],
+          [126, 177],
+          [ 88, 262],
+          [206, 255],
+          [330, 267]
+        ]
+      )).toEqual([
+        0, 2, 3,
+        0, 1, 2,
+        1, 2, 5,
+        1, 4, 5,
+        2, 3, 7,
+        2, 5, 7,
+        3, 7, 8,
+        4, 5, 6,
+        5, 6, 7,
+        6, 7, 8
+      ]);
+    });
   });
 });

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>2D Delaunay Triangulation Example</title>
+  </head>
+
+  <body>
+    <canvas id="canvas" width="366" height="299">
+    </canvas>
+
+    <p>This example is taken from an image on
+    <a href="http://paulbourke.net/papers/triangulate/">Paul Bourke's
+    triangulation website</a>. One curious fact is that the example on his
+    website is missing the bottom triangle, since a Delaunay triangulation is
+    supposed to form a convex hull around the points!</p>
+
+    <script type="text/javascript" src="../lib/delaunay.js">
+    </script>
+
+    <script type="text/javascript">
+      var canvas   = document.getElementById("canvas"),
+          ctx      = canvas.getContext("2d"),
+          vertices = [
+            [223,   1],
+            [ 92,  46],
+            [200,  97],
+            [325, 120],
+            [  2, 148],
+            [126, 177],
+            [ 88, 262],
+            [206, 255],
+            [330, 267]
+          ],
+          triangles = Delaunay.triangulate(vertices),
+          i, a, b, c;
+
+      /* Draw the triangles. */
+      for(i = triangles.length; i; ) {
+        a = triangles[--i];
+        b = triangles[--i];
+        c = triangles[--i];
+
+        ctx.beginPath();
+        ctx.moveTo(vertices[a][0], vertices[a][1]);
+        ctx.lineTo(vertices[b][0], vertices[b][1]);
+        ctx.lineTo(vertices[c][0], vertices[c][1]);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      /* Draw the vertices. */
+      ctx.fillStyle = "red";
+      for(i = vertices.length; i--; ) {
+        ctx.beginPath();
+        ctx.arc(vertices[i][0], vertices[i][1], 4, 0, 2 * Math.PI, false);
+        ctx.fill();
+      }
+    </script>
+  </body>
+</html>
