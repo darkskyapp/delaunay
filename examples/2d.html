@@ -12,44 +12,36 @@
     </script>
 
     <script type="text/javascript">
-      var canvas = document.getElementById("canvas"),
-          ctx    = canvas.getContext("2d"),
-          matrix = new Array(32),
+      var canvas   = document.getElementById("canvas"),
+          ctx      = canvas.getContext("2d"),
+          vertices = new Array(16),
           triangles, i;
 
       /* Randomly distribute vertices around the canvas. */
-      for(i = 0; i !== matrix.length; i += 2) {
-        matrix[i + 0] = Math.random() * (canvas.width  - 8) + 4;
-        matrix[i + 1] = Math.random() * (canvas.height - 8) + 4;
-      }
+      for(i = vertices.length; i--; )
+        vertices[i] = [
+          Math.random() * (canvas.width  - 8) + 4,
+          Math.random() * (canvas.height - 8) + 4
+        ];
 
       /* Delaunay triangulate the vertices. */
-      triangles = Delaunay.triangulateMatrix(2, matrix);
+      triangles = Delaunay.triangulate(vertices);
 
       /* Draw the triangles. */
       ctx.strokeStyle = "black";
-      for(i = 0; i !== triangles.length; i += 3) {
+      for(i = triangles.length; i; ) {
         ctx.beginPath();
-        ctx.moveTo(
-          matrix[triangles[i + 0] * 2 + 0],
-          matrix[triangles[i + 0] * 2 + 1]
-        );
-        ctx.lineTo(
-          matrix[triangles[i + 1] * 2 + 0],
-          matrix[triangles[i + 1] * 2 + 1]
-        );
-        ctx.lineTo(
-          matrix[triangles[i + 2] * 2 + 0],
-          matrix[triangles[i + 2] * 2 + 1]
-        );
+        --i; ctx.moveTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
+        --i; ctx.lineTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
+        --i; ctx.lineTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
         ctx.stroke();
       }
 
       /* Draw the vertices. */
       ctx.fillStyle = "red";
-      for(i = 0; i !== matrix.length; i += 2) {
+      for(i = vertices.length; i--; ) {
         ctx.beginPath();
-        ctx.arc(matrix[i + 0], matrix[i + 1], 4, 0, 2 * Math.PI, false);
+        ctx.arc(vertices[i][0], vertices[i][1], 4, 0, 2 * Math.PI, false);
         ctx.fill();
       }
     </script>
