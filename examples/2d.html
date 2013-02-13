@@ -15,7 +15,7 @@
       var canvas   = document.getElementById("canvas"),
           ctx      = canvas.getContext("2d"),
           vertices = new Array(16),
-          triangles, i;
+          triangles, i, a, b, c;
 
       /* Randomly distribute vertices around the canvas. */
       for(i = vertices.length; i--; )
@@ -30,10 +30,15 @@
       /* Draw the triangles. */
       ctx.strokeStyle = "black";
       for(i = triangles.length; i; ) {
+        a = triangles[--i];
+        b = triangles[--i];
+        c = triangles[--i];
+
         ctx.beginPath();
-        --i; ctx.moveTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
-        --i; ctx.lineTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
-        --i; ctx.lineTo(vertices[triangles[i]][0], vertices[triangles[i]][1]);
+        ctx.moveTo(vertices[a][0], vertices[a][1]);
+        ctx.lineTo(vertices[b][0], vertices[b][1]);
+        ctx.lineTo(vertices[c][0], vertices[c][1]);
+        ctx.closePath();
         ctx.stroke();
       }
 
