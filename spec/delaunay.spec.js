@@ -67,20 +67,6 @@ describe("Delaunay", function() {
         [ 1,  1]
       ]);
     });
-
-    it("should apply a margin around the bounding box if requested", function() {
-      expect(Delaunay.boundingBox(
-        [
-          [1, 2, 3],
-          [4, 5, 6]
-        ],
-        3,
-        20
-      )).toEqual([
-        [-19, -18, -17],
-        [ 24,  25,  26]
-      ]);
-    });
   });
 
   describe("boundingSimplex", function() {
@@ -126,19 +112,19 @@ describe("Delaunay", function() {
       ]);
     });
 
-    it("should apply a margin around the bounding simplex if requested", function() {
+    it("should apply a multiplicative margin around the bounding simplex if requested", function() {
       expect(Delaunay.boundingSimplex(
         [
           [1, 2, 3],
           [4, 5, 6]
         ],
         3,
-        20
+        2
       )).toEqual([
-        [-19, -18, -17],
-        [ 67, -18, -17],
-        [-19,  68, -17],
-        [-19, -18,  69]
+        [-5, -4, -3],
+        [13, -4, -3],
+        [-5, 14, -3],
+        [-5, -4, 15]
       ]);
     });
   });
@@ -228,25 +214,21 @@ describe("Delaunay", function() {
   });
 
   describe("removeDuplicateEdges", function() {
-    it("should remove all but the first occurrance of an edge from an array", function() {
+    it("should remove all edges that appear twice in an array", function() {
       var edges = [
             [1, 2, 3],
             [1, 2, 4],
             [1, 2, 3],
             [1, 3, 4],
             [2, 3, 4],
-            [2, 3, 4],
-            [1, 3, 4],
             [2, 3, 4]
           ];
 
       Delaunay.removeDuplicateEdges(edges);
 
       expect(edges).toEqual([
-        [1, 2, 3],
         [1, 2, 4],
-        [1, 3, 4],
-        [2, 3, 4]
+        [1, 3, 4]
       ]);
     });
   });
