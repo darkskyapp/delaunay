@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>3D Delaunay Triangulation Example</title>
+  </head>
+
+  <body>
+    <canvas id="canvas" width="256" height="256">
+    </canvas>
+
+    <script type="text/javascript" src="../lib/delaunay.js">
+    </script>
+
+    <script type="text/javascript">
+      var canvas   = document.getElementById("canvas"),
+          ctx      = canvas.getContext("2d"),
+          vertices = new Array(8),
+          tetrahedrons, i;
+
+      /* Randomly distribute vertices around the 3D space. */
+      for(i = vertices.length; i--; )
+        vertices[i] = [
+          Math.random() * 2 - 1,
+          Math.random() * 2 - 1,
+          Math.random() * 2 - 1
+        ];
+
+      /* Delaunay triangulate the vertices. */
+      tetrahedrons = Delaunay.triangulate(vertices);
+
+      if(tetrahedrons.length)
+        setInterval(function() {
+          var theta   = Date.now() * Math.PI / 8000,
+              rotated = new Array(vertices.length),
+              i, w, x, y, z;
+
+          for(i = rotated.length; i--; ) {
+            w = vertices[i];
+
+            x = w[0] * Math.cos(theta) - w[2] * Math.sin(theta);
+            y = w[1];
+            z = w[0] * Math.sin(theta) + w[2] * Math.cos(theta);
+
+            z += 4;
+
+            rotated[i] = [
+              canvas.width  * 0.5 + x * canvas.width / z,
+              canvas.height * 0.5 + y * canvas.width / z
+            ];
+          }
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          for(i = tetrahedrons.length; i; ) {
+            w = tetrahedrons[--i];
+            x = tetrahedrons[--i];
+            y = tetrahedrons[--i];
+            z = tetrahedrons[--i];
+
+            ctx.beginPath();
+            ctx.moveTo(rotated[w][0], rotated[w][1]);
+            ctx.lineTo(rotated[x][0], rotated[x][1]);
+            ctx.lineTo(rotated[y][0], rotated[y][1]);
+            ctx.lineTo(rotated[w][0], rotated[w][1]);
+            ctx.lineTo(rotated[z][0], rotated[z][1]);
+            ctx.lineTo(rotated[x][0], rotated[x][1]);
+            ctx.moveTo(rotated[y][0], rotated[y][1]);
+            ctx.lineTo(rotated[z][0], rotated[z][1]);
+            ctx.stroke();
+          }
+        }, 1000 / 60);
+    </script>
+  </body>
+</html>
