@@ -101,6 +101,53 @@
       }
 
       ctx.putImageData(id, 0, 0);
+
+      ctx.strokeStyle = "yellow";
+      for(i = mesh.length; i; ) {
+        ctx.beginPath();
+        --i;
+        ctx.moveTo(
+          vertices[mesh[i]]["location"][0],
+          vertices[mesh[i]]["location"][1]
+        );
+
+        --i;
+        ctx.lineTo(
+          vertices[mesh[i]]["location"][0],
+          vertices[mesh[i]]["location"][1]
+        );
+
+        --i;
+        ctx.lineTo(
+          vertices[mesh[i]]["location"][0],
+          vertices[mesh[i]]["location"][1]
+        );
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      for(i = vertices.length; i--; ) {
+        ctx.fillStyle = 
+          "rgb(" +
+          vertices[i]["color"] +
+          "," +
+          vertices[i]["color"] +
+          "," +
+          vertices[i]["color"] +
+          ")";
+
+        ctx.beginPath();
+        ctx.arc(
+          vertices[i]["location"][0],
+          vertices[i]["location"][1],
+          4,
+          0,
+          2 * Math.PI,
+          false
+        );
+        ctx.fill();
+        ctx.stroke();
+      }
     </script>
   </body>
 </html>
