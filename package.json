@@ -1,0 +1,22 @@
+{
+  "name": "delaunay",
+  "version": "0.2.0",
+  "description": "Delaunay triangulation in arbitrary dimensions",
+  "keywords": [
+    "delaunay",
+    "triangulation"
+  ],
+  "author": {
+    "name": "The Dark Sky Company",
+    "email": "devsupport@darkskyapp.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/darkskyapp/delaunay.git"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "jasmine-node": "1.2.x"
+  }
+}
