@@ -72,15 +72,18 @@ var Delaunay = require("../lib/delaunay");
       });
     });
 
+    /* FIXME: boundingSimplex adds a positively psychotic amount of padding
+     * around the bounding vertices. This is gross! There must be a better
+     * way. */
     describe("boundingSimplex", function() {
       it("should return a simplex with each vertex at the origin given no vertices", function() {
         expect(Delaunay.boundingSimplex(
           [],
           2
         )).toEqual([
-          [0, 0],
-          [0, 0],
-          [0, 0]
+          [-2048, -2048],
+          [ 6144, -2048],
+          [-2048,  6144]
         ]);
       });
 
@@ -91,10 +94,10 @@ var Delaunay = require("../lib/delaunay");
           ],
           3
         )).toEqual([
-          [1, 2, 3],
-          [1, 2, 3],
-          [1, 2, 3],
-          [1, 2, 3]
+          [-2047, -2046, -2045],
+          [ 6145, -2046, -2045],
+          [-2047,  6146, -2045],
+          [-2047, -2046,  6147]
         ]);
       });
 
@@ -109,26 +112,9 @@ var Delaunay = require("../lib/delaunay");
           ],
           2
         )).toEqual([
-          [-1, -1],
-          [ 3, -1],
-          [-1,  3]
-        ]);
-      });
-
-      it("should apply additive and multiplicative margins around the bounding simplex if requested", function() {
-        expect(Delaunay.boundingSimplex(
-          [
-            [1, 2, 3],
-            [4, 5, 6]
-          ],
-          3,
-          1,
-          2
-        )).toEqual([
-          [-12, -11, -10],
-          [ 21, -11, -10],
-          [-12,  22, -10],
-          [-12, -11,  23]
+          [-2051, -2051],
+          [ 6151, -2051],
+          [-2051,  6151]
         ]);
       });
     });
