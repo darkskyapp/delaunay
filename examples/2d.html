@@ -8,47 +8,99 @@
     <canvas id="canvas" width="256" height="256">
     </canvas>
 
+    <script type="text/javascript" src="../lib/matrix.js">
+    </script>
+    <script type="text/javascript" src="../lib/barycentric.js">
+    </script>
     <script type="text/javascript" src="../lib/delaunay.js">
     </script>
 
     <script type="text/javascript">
+      function lookup(mesh, vertices, vertex, key) {
+        var simplex = new Array(3),
+            i, coords;
+
+        vertex = Delaunay.resolve(vertex, key);
+
+        for(i = mesh.length; i; ) {
+          simplex[2] = Delaunay.resolve(vertices[mesh[--i]], key);
+          simplex[1] = Delaunay.resolve(vertices[mesh[--i]], key);
+          simplex[0] = Delaunay.resolve(vertices[mesh[--i]], key);
+
+          coords = Barycentric.contains(simplex, vertex);
+
+          if(coords) {
+            coords.unshift(
+              vertices[mesh[i + 0]],
+              vertices[mesh[i + 1]],
+              vertices[mesh[i + 2]]
+            );
+
+            return coords;
+          }
+        }
+
+        return null;
+      }
+
+      function lerp(a, b, c, x, y) {
+        a = a["color"];
+        b = b["color"];
+        c = c["color"];
+        return Math.round(a + x * (b - a) + y * (c - a));
+      }
+
       var canvas   = document.getElementById("canvas"),
           ctx      = canvas.getContext("2d"),
-          vertices = new Array(16),
-          triangles, i, a, b, c;
+          id       = ctx.getImageData(0, 0, canvas.width, canvas.height),
+          vertices = new Array(8),
+          vertex   = {"location": new Array(2)},
+          mesh, i, x, y, coords;
 
       /* Randomly distribute vertices around the canvas. */
       for(i = vertices.length; i--; )
-        vertices[i] = [
-          Math.random() * (canvas.width  - 8) + 4,
-          Math.random() * (canvas.height - 8) + 4
-        ];
+        vertices[i] = {
+          "location": [
+            Math.random() * (canvas.width  - 8) + 4,
+            Math.random() * (canvas.height - 8) + 4
+          ],
+          "color": Math.floor(Math.random() * 256)
+        }
 
       /* Delaunay triangulate the vertices. */
-      triangles = Delaunay.triangulate(vertices);
+      mesh = Delaunay.triangulate(vertices, "location");
 
-      /* Draw the triangles. */
-      ctx.strokeStyle = "black";
-      for(i = triangles.length; i; ) {
-        a = triangles[--i];
-        b = triangles[--i];
-        c = triangles[--i];
+      /* Look up each pixel in the mesh. */
+      i = id.data.length;
+      for(y = id.height; y--; ) {
+        vertex["location"][1] = y + 0.5;
 
-        ctx.beginPath();
-        ctx.moveTo(vertices[a][0], vertices[a][1]);
-        ctx.lineTo(vertices[b][0], vertices[b][1]);
-        ctx.lineTo(vertices[c][0], vertices[c][1]);
-        ctx.closePath();
-        ctx.stroke();
+        for(x = id.width; x--; ) {
+          vertex["location"][0] = x + 0.5;
+
+          id.data[--i] = 255;
+
+          if(coords = lookup(mesh, vertices, vertex, "location")) {
+            id.data[--i] = 
+            id.data[--i] = 
+            id.data[--i] = lerp.apply(null, coords);
+          }
+
+          else if((x + y) & 16) {
+            id.data[--i] = 255;
+            id.data[--i] = 63;
+            id.data[--i] = 63;
+          }
+
+          else {
+            id.data[--i] = 191;
+            id.data[--i] = 47;
+            id.data[--i] = 47;
+          }
+        }
       }
 
-      /* Draw the vertices. */
-      ctx.fillStyle = "red";
-      for(i = vertices.length; i--; ) {
-        ctx.beginPath();
-        ctx.arc(vertices[i][0], vertices[i][1], 4, 0, 2 * Math.PI, false);
-        ctx.fill();
-      }
+      ctx.putImageData(id, 0, 0);
     </script>
   </body>
 </html>
