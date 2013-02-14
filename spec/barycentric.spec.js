@@ -39,6 +39,14 @@ var Barycentric = require("../lib/barycentric");
         expect(bary[1]).toBeCloseTo(-0.244, 3);
       });
 
+      it("should return 1.488,1.488 for 0,2 in the reference triangle", function() {
+        var bary = Barycentric.coordinates(s2, [0, 2]);
+        expect(Array.isArray(bary)).toBeTruthy();
+        expect(bary.length).toBe(2);
+        expect(bary[0]).toBeCloseTo(1.488, 3);
+        expect(bary[1]).toBeCloseTo(1.488, 3);
+      });
+
       /* TODO: 3D cases */
     });
 
@@ -67,6 +75,11 @@ var Barycentric = require("../lib/barycentric");
         expect(Barycentric.contains(s2, [0, -1])).toBeNull();
       });
 
+      it("should return null for 0,2 in the reference triangle", function() {
+        expect(Barycentric.contains(s2, [0, 2])).toBeNull();
+      });
+
+      /* TODO: 3D cases */
       /* TODO: 3D cases */
     });
   });
