@@ -1,2 +1,6 @@
-exports.barycentric = require("./lib/barycentric");
-exports.delaunay    = require("./lib/delaunay");
+var Barycentric = require("./lib/barycentric"),
+    Delaunay    = require("./lib/delaunay");
+
+exports.triangulate = Delaunay.triangulate;
+exports.coordinates = Barycentric.coordinates;
+exports.contains    = Barycentric.contains;
