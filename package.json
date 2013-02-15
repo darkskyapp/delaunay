@@ -1,6 +1,6 @@
 {
   "name": "delaunay",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Delaunay triangulation in arbitrary dimensions",
   "keywords": [
     "delaunay",
