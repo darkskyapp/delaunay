@@ -16,6 +16,6 @@ There are very clever divide-and-conquer algorithms for Delaunay triangulation
 (even in arbitrary dimensions!) that are O(n log n). That said, it should be
 fast enough for most purposes.
 
-This code is used experimentally in the [Dark Sky
-API](http://developer.darkskyapp.com/), but even so, it is not especially
-mature. Please use caution when putting it into production.
+This code has been in production use in the [Forecast
+API](http://developer.forecast.io/) for some months, and should be stable
+enough for general use.
