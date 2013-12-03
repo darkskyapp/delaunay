@@ -16,6 +16,8 @@ There are very clever divide-and-conquer algorithms for Delaunay triangulation
 (even in arbitrary dimensions!) that are O(n log n). That said, it should be
 fast enough for most purposes.
 
-This code has been in production use in the [Forecast
-API](http://developer.forecast.io/) for some months, and should be stable
-enough for general use.
+**THIS CODE IS DEPRECATED.** It was once used in the [Forecast
+API](http://developer.forecast.io/), but these days we use the similar (and
+much faster and simpler) [`delaunay-fast`](https://github.com/ironwallaby/delaunay)
+library (`npm install delaunay-fast`). This code is kept around for historical
+interest.
