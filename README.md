@@ -21,3 +21,11 @@ API](http://developer.forecast.io/), but these days we use the similar (and
 much faster and simpler) [`delaunay-fast`](https://github.com/ironwallaby/delaunay)
 library (`npm install delaunay-fast`). This code is kept around for historical
 interest.
+
+License
+-------
+
+To the extend possible by law, The Dark Sky Company, LLC has [waived all
+copyright and related or neighboring rights][cc0] to this library.
+
+[cc0]: http://creativecommons.org/publicdomain/zero/1.0/
